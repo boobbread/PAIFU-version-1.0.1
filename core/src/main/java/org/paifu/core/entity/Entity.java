@@ -1,6 +1,8 @@
 package org.paifu.core.entity;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.paifu.graphics3D.mesh.Model;
 
 import java.util.Vector;
 
@@ -8,8 +10,10 @@ public class Entity {
 
     public Vector3f position;
     public Vector3f rotation;
+    public float scale;
     public String type;
-
+    public Matrix4f modelMatrix = new Matrix4f();
+    public Model model;
 
     //Constructors
     public Entity(Vector3f position, Vector3f rotation, String type){
@@ -49,6 +53,17 @@ public class Entity {
         this.rotation.z = (float)(Math.cos(pitch) * Math.cos(yaw));
     }
 
+    // Updating model matrix
+    public void updateModelMatrix() {
+
+        modelMatrix.identity().translate(position).
+                rotateX((float) Math.toRadians(rotation.x)).
+                rotateY((float) Math.toRadians(rotation.y)).
+                rotateZ((float) Math.toRadians(rotation.z)).
+                scale(scale);
+
+    }
+
     //Getters and Setters
     public Vector3f getPosition() {
         return position;
@@ -72,5 +87,21 @@ public class Entity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Matrix4f getModelMatrix() {
+        return modelMatrix;
+    }
+
+    public void setModelMatrix(Matrix4f modelMatrix) {
+        this.modelMatrix = modelMatrix;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 }
